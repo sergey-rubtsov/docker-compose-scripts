@@ -7,7 +7,7 @@ networks:
 services:
 
   proxy:
-    image: nginxinc/nginx-ldap:1.12.2
+    image: tiredofit/nginx-ldap
     container_name: proxy
     volumes:
       - ./proxy/nginx.conf:/etc/nginx/nginx.conf:ro

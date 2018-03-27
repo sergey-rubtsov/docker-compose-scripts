@@ -1,11 +1,15 @@
-FROM jenkins:2.32.1-alpine
+FROM jenkins:2.60.3
 
 COPY plugins.txt /usr/share/jenkins/
 RUN /usr/local/bin/install-plugins.sh $(cat /usr/share/jenkins/plugins.txt)
 
-ENV JENKINS_SWARM_PLUGIN_VERSION=2.2
+ENV JENKINS_SWARM_PLUGIN_VERSION=3.6
 
 USER root
+
+# http://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/3.6/swarm-client-3.6.jar
+# http://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/2.2/swarm-client-2.2-jar-with-dependencies.jar
+# http://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/${JENKINS_SWARM_PLUGIN_VERSION}/swarm-client-${JENKINS_SWARM_PLUGIN_VERSION}.jar
 
 RUN curl -s -o /bin/swarm-client.jar \
     -k http://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/${JENKINS_SWARM_PLUGIN_VERSION}/swarm-client-${JENKINS_SWARM_PLUGIN_VERSION}-jar-with-dependencies.jar
