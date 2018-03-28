@@ -3,7 +3,7 @@ import hudson.security.*
 import org.jenkinsci.plugins.*
 
 
-String server = 'ldap://openldap'
+String server = 'ldap://ldap'
 String rootDN = 'dc=mvp,dc=org'
 String userSearchBase = 'ou=users'
 String userSearch = ''
