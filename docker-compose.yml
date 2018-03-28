@@ -1,11 +1,20 @@
 version: '2'
+
+networks:
+  bootcamp:
+    driver: bridge
+
 services:
   nginx:
     build: nginx
     command: nginx -g "daemon off;"
     links:
       - tomcat
+      - jenkins
+      - sonarqube
     container_name: app_nginx
+    networks:
+      - bootcamp
     ports:
       - "5000:80"
   tomcat:
@@ -13,12 +22,56 @@ services:
     working_dir: /usr/local/tomcat
     command: catalina.sh run
     container_name: app_tomcat
+    networks:
+      - bootcamp
     ports:
       - "8080:8080"
   jenkins:
-    build: jenkins/
+    build: jenkins
     container_name: jenkins
+    networks:
+      - bootcamp
     restart: always
     ports:
-      - "8081:8081"
-      - "5001:5001"
+      - "8081:8080"
+  gogs:
+    image: gogs/gogs:latest
+    container_name: gogs
+    networks:
+      - bootcamp
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    networks:
+      - bootcamp
+    environment:
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+  db:
+    image: postgres
+    networks:
+      - bootcamp
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+    volumes:
+      - postgresql:/var/lib/postgresql
+      # This needs explicit mapping due to https://github.com/docker-library/postgres/blob/4e48e3228a30763913ece952c611e5e9b95c8759/Dockerfile.template#L52
+      - postgresql_data:/var/lib/postgresql/data
+
+volumes:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_bundled-plugins:
+  postgresql:
+  postgresql_data:
