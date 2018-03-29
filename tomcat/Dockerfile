@@ -5,7 +5,7 @@ LABEL maintainer="sergey.rubtsov81@gmail.com"
 COPY conf/tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
 COPY conf/context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml
 
-COPY spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar /usr/local/tomcat/webapps/
+COPY webapps/spring-petclinic-2.0.0.BUILD-SNAPSHOT.jar /usr/local/tomcat/webapps/
 
 EXPOSE 5000
 
