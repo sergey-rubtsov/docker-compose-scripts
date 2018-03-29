@@ -19,10 +19,10 @@ services:
     ports:
       - "5000:80"
   tomcat:
-    build: sergioko/tomcat8
+    build: tomcat
     working_dir: /usr/local/tomcat
     command: catalina.sh run
-    container_name: tomcat
+    container_name: app_tomcat
     networks:
       - bootcamp
     restart: always
