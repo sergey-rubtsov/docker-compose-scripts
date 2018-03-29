@@ -15,6 +15,7 @@ services:
     container_name: app_nginx
     networks:
       - bootcamp
+    restart: always
     ports:
       - "5000:80"
   tomcat:
@@ -24,6 +25,7 @@ services:
     container_name: app_tomcat
     networks:
       - bootcamp
+    restart: always
     ports:
       - "8080:8080"
   jenkins:
@@ -45,6 +47,7 @@ services:
       - "3000"
   sonarqube:
     image: sonarqube
+    restart: always
     ports:
       - "9000:9000"
     networks:
@@ -58,6 +61,7 @@ services:
       - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
   db:
     image: postgres
+    restart: always
     networks:
       - bootcamp
     environment:
